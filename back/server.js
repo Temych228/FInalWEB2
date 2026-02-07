@@ -5,7 +5,7 @@ import dns from "dns";
 
 dns.setDefaultResultOrder("ipv4first");
 
-dotenv.config({ path: "./back/.env" });
+dotenv.config();
 
 console.log("ENV CHECK:", process.env.MONGO_URI);
 

@@ -1,0 +1,252 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Background */
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  color: #fff;
+
+  background-image: url("../images/bgi.jpg");
+  background-position: center;
+  background-attachment: fixed;
+  background-size: 500px;
+  background-repeat: repeat;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: -1;
+}
+
+/* HEADER / NAVBAR */
+.home-header {
+  background-color: rgba(25, 25, 27, 0.85);
+  backdrop-filter: blur(10px);
+  padding: 10px 40px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 26px;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+}
+
+.logo i {
+  margin-right: 8px;
+  color: #ffb570;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.header-nav a {
+  text-decoration: none;
+  color: #eee;
+  font-size: 16px;
+  transition: 0.25s;
+}
+
+.header-nav a:hover {
+  color: #ffb570;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropbtn {
+  border: none;
+  background: transparent;
+  color: #eee;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 10px 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dropbtn:hover {
+  color: #ffb570;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  min-width: 170px;
+
+  background-color: rgba(25, 25, 27, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+  z-index: 2000;
+}
+
+.dropdown.open .dropdown-content {
+  display: block;
+}
+
+.dropdown-content a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  color: #eee;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.dropdown-content a i {
+  width: 18px;
+  text-align: center;
+}
+
+.dropdown-content a:hover {
+  background-color: #ffb570;
+  color: #111;
+}
+
+.page {
+  padding: 30px 40px;
+}
+
+.hero {
+  max-width: 1000px;
+  margin: 10px auto 20px auto;
+  background: rgba(0, 0, 0, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 18px;
+}
+
+.hero h1 {
+  font-size: 26px;
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.hero p {
+  color: #ddd;
+}
+
+.content {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.status {
+  margin: 10px 0;
+  color: #ffd9b0;
+}
+
+.pet-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 12px;
+}
+
+/* CARD */
+.pet-card {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  background: rgba(25, 25, 27, 0.6);
+}
+
+.pet-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.25s ease;
+}
+
+.pet-card:hover img {
+  transform: scale(1.08);
+}
+
+.pet-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 12px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+  transform: translateY(18px);
+  opacity: 0;
+  transition: 0.25s ease;
+}
+
+.pet-card:hover .pet-overlay {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.pet-overlay .pet-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.pet-overlay .pet-age {
+  font-size: 14px;
+  color: #ffd9b0;
+}
+
+.pet-detail {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 18px;
+  background: rgba(0, 0, 0, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.pet-detail-photo {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pet-detail-row {
+  margin-bottom: 10px;
+  color: #ddd;
+}
+
+.pet-detail-desc {
+  color: #ddd;
+  margin-top: 6px;
+}
+
+

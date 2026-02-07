@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cats | PetAdopt</title>
+
+    <link rel="stylesheet" href="../css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <header class="home-header">
+      <div class="nav-container">
+        <a href="index.html" class="logo" title="PetAdopt">
+          <i class="fa-solid fa-paw"></i> PetAdopt
+        </a>
+
+        <nav class="header-nav">
+          <a href="index.html">Home</a>
+
+          <div class="dropdown">
+            <button class="dropbtn" id="petsToggle" type="button">
+              Pets ▾
+            </button>
+
+            <div class="dropdown-content">
+              <a href="dogs.html"><i class="fa-solid fa-dog"></i> Dogs</a>
+              <a href="cats.html"><i class="fa-solid fa-cat"></i> Cats</a>
+              <a href="birds.html"><i class="fa-solid fa-dove"></i> Birds</a>
+            </div>
+          </div>
+
+          <a href="#">Login</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="hero">
+        <h1>Cats</h1>
+      </section>
+
+      <section class="content">
+        <div id="status" class="status"></div>
+        <div id="pet-grid" class="pet-grid"></div>
+      </section>
+    </main>
+
+    <script src="../js/nav.js"></script>
+    <script src="../js/category.js"></script>
+    <script>
+      loadCategory("cat");
+    </script>
+  </body>
+</html>
