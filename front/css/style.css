@@ -279,3 +279,117 @@ main {
   padding: 10px;
 }
 
+/* AUTH UI */
+.active-link {
+  color: #ffb570 !important;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 520px;
+  background: rgba(0,0,0,0.78);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 18px 18px 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  backdrop-filter: blur(8px);
+}
+
+.auth-header h1 {
+  margin: 0;
+  font-size: 28px;
+  text-align: center;
+}
+
+.auth-subtitle {
+  margin-top: 8px;
+  text-align: center;
+  color: #ddd;
+  font-size: 14px;
+}
+
+.auth-status {
+  margin: 14px 0 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(255, 181, 112, 0.12);
+  color: #ffd9b0;
+  border: 1px solid rgba(255, 181, 112, 0.22);
+  text-align: center;
+}
+
+.auth-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.auth-tab {
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(25,25,27,0.55);
+  color: #eee;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.auth-tab.active {
+  background: rgba(255,181,112,0.9);
+  color: #111;
+  border-color: rgba(255,181,112,0.9);
+}
+
+.auth-form {
+  margin-top: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.auth-label {
+  font-size: 13px;
+  color: #ddd;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  outline: none;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(0,0,0,0.35);
+  color: #fff;
+}
+
+.auth-input::placeholder {
+  color: rgba(255,255,255,0.55);
+}
+
+.auth-btn {
+  margin-top: 4px;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  background: rgba(255,181,112,0.95);
+  color: #111;
+  font-weight: 700;
+  transition: 0.2s;
+}
+
+.auth-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+}
+
+.auth-btn.danger {
+  background: rgba(255, 120, 120, 0.95);
+}
+
+.auth-msg {
+  min-height: 18px;
+  font-size: 13px;
+  text-align: center;
+}

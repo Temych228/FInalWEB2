@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | PetAdopt</title>
+
+  <link rel="stylesheet" href="../css/style.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+</head>
+
+<body class="layout">
+
+  <!-- HEADER -->
+  <header class="home-header">
+    <div class="nav-container">
+      <a href="index.html" class="logo" title="PetAdopt">
+        <i class="fa-solid fa-paw"></i> PetAdopt
+      </a>
+
+      <nav class="header-nav">
+        <a href="index.html">Home</a>
+
+        <div class="dropdown">
+          <button class="dropbtn" id="petsToggle" type="button">Pets ▾</button>
+          <div class="dropdown-content">
+            <a href="dogs.html"><i class="fa-solid fa-dog"></i> Dogs</a>
+            <a href="cats.html"><i class="fa-solid fa-cat"></i> Cats</a>
+            <a href="birds.html"><i class="fa-solid fa-dove"></i> Birds</a>
+          </div>
+        </div>
+
+        <a href="login.html" class="active-link">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="main-content">
+    <section class="auth-card">
+      <div class="auth-header">
+        <h1 id="authTitle">Login</h1>
+        <p class="auth-subtitle" id="authSubtitle">
+          Sign in to manage your requests.
+        </p>
+      </div>
+
+      <div id="authStatus" class="auth-status" style="display:none;"></div>
+
+      <!-- Tabs -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tabLogin" type="button">Login</button>
+        <button class="auth-tab" id="tabRegister" type="button">Register</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <form id="loginForm" class="auth-form">
+        <label class="auth-label">Email</label>
+        <input class="auth-input" type="email" id="loginEmail" placeholder="" required />
+
+        <label class="auth-label">Password</label>
+        <input class="auth-input" type="password" id="loginPassword" placeholder="" required />
+
+        <button class="auth-btn" type="submit">
+          <i class="fa-solid fa-right-to-bracket"></i> Login
+        </button>
+
+        <div id="loginMsg" class="auth-msg"></div>
+      </form>
+
+      <!-- REGISTER FORM -->
+      <form id="registerForm" class="auth-form" style="display:none;">
+        <label class="auth-label">Username</label>
+        <input class="auth-input" type="text" id="regUsername" placeholder="" required />
+
+        <label class="auth-label">Email</label>
+        <input class="auth-input" type="email" id="regEmail" placeholder="" required />
+
+        <label class="auth-label">Password (min 6)</label>
+        <input class="auth-input" type="password" id="regPassword" placeholder="" minlength="6" required />
+
+        <label class="auth-label">Address (optional)</label>
+        <input class="auth-input" type="text" id="regAddress" placeholder="" />
+
+        <button class="auth-btn" type="submit">
+          <i class="fa-solid fa-user-plus"></i> Register
+        </button>
+
+        <div id="registerMsg" class="auth-msg"></div>
+      </form>
+
+      <button id="logoutBtn" class="auth-btn danger" type="button" style="display:none;">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
+      </button>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p><b>Developers:</b> Safaryan Artyom, Daniyar Ayazbaev, Faizrakhman Alikhan</p>
+  </footer>
+
+  <script src="../js/nav.js"></script>
+  <script src="../js/auth.js"></script>
+</body>
+</html>

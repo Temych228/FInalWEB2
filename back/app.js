@@ -35,6 +35,9 @@ app.get("/pet.html", (req, res) => {
   res.sendFile(path.join(__dirname, "../front/html/pet.html"));
 });
 
+app.get("/login.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "../front/html/login.html"));
+});
 
 app.use("/api/auth", authRoutes);
 app.use("/api/pets", petRoutes);
