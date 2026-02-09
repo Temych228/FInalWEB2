@@ -54,6 +54,14 @@ async function loadProfile() {
   }
 }
 
+document.getElementById("editProfileBtn")?.addEventListener("click", () => {
+  document.getElementById("editModal").classList.add("active");
+});
+
+document.getElementById("closeModal")?.addEventListener("click", () => {
+  document.getElementById("editModal").classList.remove("active");
+});
+
 document.getElementById("logoutBtn2")?.addEventListener("click", () => {
   clearAuth();
   window.location.href = "login.html";
@@ -88,6 +96,7 @@ document.getElementById("editProfileForm")?.addEventListener("submit", async (e)
       localStorage.setItem(USER_KEY, JSON.stringify(data.user));
     }
     await loadProfile();
+    document.getElementById("editModal").classList.remove("active");
     alert("Профиль обновлён");
   } catch (err) {
     console.error("Update profile error:", err);
