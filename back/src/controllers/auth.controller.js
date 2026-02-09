@@ -45,6 +45,7 @@ export const register = async (req, res) => {
         role: user.role
       }
     });
+
   } catch (err) {
     console.error("REGISTER ERROR:", err);
     res.status(500).json({ message: "Server error" });
@@ -88,8 +89,57 @@ export const login = async (req, res) => {
         role: user.role
       }
     });
+
   } catch (err) {
     console.error("LOGIN ERROR:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const me = async (req, res) => {
+  try {
+    const foundUser = await User
+      .findById(req.user.id)
+      .select("-password");
+
+    if (!foundUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(foundUser);
+
+  } catch (err) {
+    console.error("ME ERROR:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const updateMe = async (req, res) => {
+  try {
+    const { username, email } = req.body;
+
+    const foundUser = await User.findById(req.user.id);
+    if (!foundUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (username) foundUser.username = username;
+    if (email) foundUser.email = email;
+
+    await foundUser.save();
+
+    res.json({
+      message: "Profile updated",
+      user: {
+        id: foundUser._id,
+        username: foundUser.username,
+        email: foundUser.email,
+        role: foundUser.role
+      }
+    });
+
+  } catch (err) {
+    console.error("UPDATE ME ERROR:", err);
     res.status(500).json({ message: "Server error" });
   }
 };

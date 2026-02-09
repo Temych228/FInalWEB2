@@ -1,5 +1,4 @@
-// front/js/auth.js
-const API_BASE = ""; // same origin (localhost:3000)
+const API_BASE = "";
 const TOKEN_KEY = "petadopt_token";
 const USER_KEY = "petadopt_user";
 
@@ -12,18 +11,35 @@ const registerForm = document.getElementById("registerForm");
 const loginMsg = document.getElementById("loginMsg");
 const registerMsg = document.getElementById("registerMsg");
 
-const authTitle = document.getElementById("authTitle");
-const authSubtitle = document.getElementById("authSubtitle");
-
 const authStatus = document.getElementById("authStatus");
 const logoutBtn = document.getElementById("logoutBtn");
 
-function setMsg(el, text, ok = false) {
-  el.textContent = text || "";
+function saveAuth(token, user) {
+  localStorage.setItem(TOKEN_KEY, token);
+  localStorage.setItem(USER_KEY, JSON.stringify(user));
+}
+
+function getAuth() {
+  const token = localStorage.getItem(TOKEN_KEY);
+  const userRaw = localStorage.getItem(USER_KEY);
+  let user = null;
+  try { user = userRaw ? JSON.parse(userRaw) : null; } catch { user = null; }
+  return { token, user };
+}
+
+function clearAuth() {
+  localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(USER_KEY);
+}
+
+function setMsg(el, text = "", ok = false) {
+  if (!el) return;
+  el.textContent = text;
   el.style.color = ok ? "#9fffb0" : "#ffb0b0";
 }
 
-function showStatus(text) {
+function showStatus(text = "") {
+  if (!authStatus) return;
   if (!text) {
     authStatus.style.display = "none";
     authStatus.textContent = "";
@@ -33,134 +49,124 @@ function showStatus(text) {
   authStatus.textContent = text;
 }
 
-function setMode(mode) {
-  // reset msgs
-  setMsg(loginMsg, "");
-  setMsg(registerMsg, "");
-
-  if (mode === "login") {
-    tabLogin.classList.add("active");
-    tabRegister.classList.remove("active");
-    loginForm.style.display = "block";
-    registerForm.style.display = "none";
-    authTitle.textContent = "Login";
-    authSubtitle.textContent = "Sign in to manage your requests.";
-  } else {
-    tabLogin.classList.remove("active");
-    tabRegister.classList.add("active");
-    loginForm.style.display = "none";
-    registerForm.style.display = "block";
-    authTitle.textContent = "Register";
-    authSubtitle.textContent = "Create an account to adopt pets.";
-  }
-}
-
-function saveAuth(token, user) {
-  localStorage.setItem(TOKEN_KEY, token);
-  localStorage.setItem(USER_KEY, JSON.stringify(user));
-}
-
-function clearAuth() {
-  localStorage.removeItem(TOKEN_KEY);
-  localStorage.removeItem(USER_KEY);
-}
-
-function getAuth() {
-  const token = localStorage.getItem(TOKEN_KEY);
-  const userRaw = localStorage.getItem(USER_KEY);
-  const user = userRaw ? JSON.parse(userRaw) : null;
-  return { token, user };
-}
-
 function updateUI() {
   const { token, user } = getAuth();
   if (token && user) {
     showStatus(`Logged in as: ${user.username} (${user.email})`);
-    logoutBtn.style.display = "block";
+    if (logoutBtn) logoutBtn.style.display = "inline-block";
   } else {
     showStatus("");
-    logoutBtn.style.display = "none";
+    if (logoutBtn) logoutBtn.style.display = "none";
   }
 }
 
-tabLogin.addEventListener("click", () => setMode("login"));
-tabRegister.addEventListener("click", () => setMode("register"));
-
-loginForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
+function setMode(mode = "login") {
   setMsg(loginMsg, "");
-
-  const email = document.getElementById("loginEmail").value.trim();
-  const password = document.getElementById("loginPassword").value;
-
-  try {
-    const res = await fetch(`${API_BASE}/api/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password })
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      setMsg(loginMsg, data.message || "Login failed");
-      return;
-    }
-
-    // expected: { token, user:{id,username,email,role} }
-    saveAuth(data.token, data.user);
-    setMsg(loginMsg, "Login successful ✅", true);
-    updateUI();
-
-    // optional redirect after login:
-    // window.location.href = "index.html";
-  } catch (err) {
-    setMsg(loginMsg, "Network error. Check server.", false);
-  }
-});
-
-registerForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
   setMsg(registerMsg, "");
 
-  const username = document.getElementById("regUsername").value.trim();
-  const email = document.getElementById("regEmail").value.trim();
-  const password = document.getElementById("regPassword").value;
-  const address = document.getElementById("regAddress").value.trim();
+  if (mode === "login") {
+    if (tabLogin) tabLogin.classList.add("active");
+    if (tabRegister) tabRegister.classList.remove("active");
+    if (loginForm) loginForm.style.display = "block";
+    if (registerForm) registerForm.style.display = "none";
+  } else {
+    if (tabLogin) tabLogin.classList.remove("active");
+    if (tabRegister) tabRegister.classList.add("active");
+    if (loginForm) loginForm.style.display = "none";
+    if (registerForm) registerForm.style.display = "block";
+  }
+}
 
-  try {
-    const res = await fetch(`${API_BASE}/api/auth/register`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, email, password, address })
-    });
+if (tabLogin) tabLogin.addEventListener("click", () => setMode("login"));
+if (tabRegister) tabRegister.addEventListener("click", () => setMode("register"));
 
-    const data = await res.json();
+if (loginForm) {
+  loginForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    setMsg(loginMsg, "");
 
-    if (!res.ok) {
-      setMsg(registerMsg, data.message || "Register failed");
+    const email = document.getElementById("loginEmail").value.trim();
+    const password = document.getElementById("loginPassword").value;
+
+    if (!email || !password) {
+      setMsg(loginMsg, "Введите email и пароль");
       return;
     }
 
-    // expected: { message, token, user:{...} }
-    saveAuth(data.token, data.user);
-    setMsg(registerMsg, "Registered & logged in ✅", true);
-    updateUI();
+    try {
+      const res = await fetch(`${API_BASE}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
 
-    // switch to login tab (optional)
+      const data = await res.json();
+
+      if (!res.ok) {
+        setMsg(loginMsg, data.message || "Login failed");
+        return;
+      }
+
+      saveAuth(data.token, data.user);
+      setMsg(loginMsg, "Вход выполнен ✅", true);
+      updateUI();
+      window.location.href = "profile.html";
+    } catch (err) {
+      console.error("Login error:", err);
+      setMsg(loginMsg, "Network error. Check server.");
+    }
+  });
+}
+
+if (registerForm) {
+  registerForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    setMsg(registerMsg, "");
+
+    const username = document.getElementById("regUsername").value.trim();
+    const email = document.getElementById("regEmail").value.trim();
+    const password = document.getElementById("regPassword").value;
+
+    if (!username || !email || !password) {
+      setMsg(registerMsg, "Заполните все поля");
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE}/api/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, email, password })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setMsg(registerMsg, data.message || "Registration failed");
+        return;
+      }
+
+      saveAuth(data.token, data.user);
+      setMsg(registerMsg, "Зарегистрированы и вошли ✅", true);
+      updateUI();
+      window.location.href = "profile.html";
+    } catch (err) {
+      console.error("Register error:", err);
+      setMsg(registerMsg, "Network error. Check server.");
+    }
+  });
+}
+
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", () => {
+    clearAuth();
+    updateUI();
     setMode("login");
-  } catch (err) {
-    setMsg(registerMsg, "Network error. Check server.", false);
-  }
-});
-
-logoutBtn.addEventListener("click", () => {
-  clearAuth();
-  updateUI();
-  setMsg(loginMsg, "");
-  setMsg(registerMsg, "");
-  setMode("login");
-});
+    setMsg(loginMsg, "");
+    setMsg(registerMsg, "");
+    window.location.href = "login.html";
+  });
+}
 
 setMode("login");
 updateUI();

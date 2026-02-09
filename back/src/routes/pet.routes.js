@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { auth } from "../middleware/auth.middleware.js";
+import { authMiddleware } from "../middleware/auth.middleware.js";
 import {
   createPet,
   getPets,
@@ -10,10 +10,10 @@ import {
 
 const router = Router();
 
-router.post("/", auth, createPet);
+router.post("/", authMiddleware, createPet);
 router.get("/", getPets);
 router.get("/:id", getPetById);
-router.put("/:id", auth, updatePet);
-router.delete("/:id", auth, deletePet);
+router.put("/:id", authMiddleware, updatePet);
+router.delete("/:id", authMiddleware, deletePet);
 
 export default router;

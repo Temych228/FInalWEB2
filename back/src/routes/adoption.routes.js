@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { auth } from "../middleware/auth.middleware.js";
+import { authMiddleware } from "../middleware/auth.middleware.js";
+
 import {
   sendAdoptionRequest,
   getMyAdoptionRequests,
@@ -8,8 +9,10 @@ import {
 
 const router = Router();
 
-router.post("/:petId", auth, sendAdoptionRequest);
-router.get("/me", auth, getMyAdoptionRequests);
-router.put("/:userId/:requestId", auth, updateAdoptionStatus);
+router.post("/:petId", authMiddleware, sendAdoptionRequest);
+
+router.get("/me", authMiddleware, getMyAdoptionRequests);
+
+router.put("/:userId/:requestId", authMiddleware, updateAdoptionStatus);
 
 export default router;

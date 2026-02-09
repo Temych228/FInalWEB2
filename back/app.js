@@ -39,6 +39,10 @@ app.get("/login.html", (req, res) => {
   res.sendFile(path.join(__dirname, "../front/html/login.html"));
 });
 
+app.get("/profile.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "../front/html/profile.html"));
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/pets", petRoutes);
 app.use("/api/adoptions", adoptionRoutes);

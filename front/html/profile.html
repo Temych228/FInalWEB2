@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Profile</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="home-header">
+  <div class="nav-container">
+    <a href="/" class="logo">🐾 PetAdopt</a>
+
+    <nav class="header-nav">
+      <a href="/">Home</a>
+
+      <div class="dropdown">
+        <button class="dropbtn" id="petsToggle" type="button">Pets ▾</button>
+        <div class="dropdown-content">
+          <a href="dogs.html">Dogs</a>
+          <a href="cats.html">Cats</a>
+          <a href="birds.html">Birds</a>
+        </div>
+      </div>
+
+      <a href="login.html" id="loginLink">Login</a>
+      <a href="profile.html" id="profileLink" class="active-link" style="display:none;">Profile</a>
+      <a href="#" id="logoutLink" style="display:none;">Logout</a>
+    </nav>
+  </div>
+</header>
+
+<div id="editModal" class="modal-overlay">
+  <div class="modal-card">
+    <h2 style="text-align:center;">Edit profile</h2>
+
+    <form id="editProfileForm" class="auth-form">
+      <label class="auth-label">Username</label>
+      <input class="auth-input" id="editUsername" required>
+
+      <label class="auth-label">Email</label>
+      <input class="auth-input" id="editEmail" type="email" required>
+
+      <button class="auth-btn" type="submit">Save changes</button>
+      <button class="auth-btn danger" type="button" id="closeModal">Cancel</button>
+    </form>
+  </div>
+</div>
+
+<main class="main-content">
+  <div class="auth-card profile-card">
+
+    <div class="profile-header">
+      <h2 id="profileName">John Doe</h2>
+      <p class="profile-role" id="profileRole">User</p>
+    </div>
+
+    <div class="profile-info">
+      <div class="profile-row">
+        <span>Email:</span>
+        <span id="profileEmail">john@mail.com</span>
+      </div>
+
+      <div class="profile-row">
+        <span>Role:</span>
+        <span id="profileRoleText">User</span>
+      </div>
+    </div>
+
+    <div class="profile-actions">
+      <button class="auth-btn" id="editProfileBtn">Edit profile</button>
+      <button class="auth-btn danger" id="logoutBtn2">Logout</button>
+    </div>
+
+  </div>
+</main>
+
+<footer class="footer">
+  <p><b>Developers:</b> Safaryan Artyom, Daniyar Ayazbaev, Faizrakhman Alikhan</p>
+</footer>
+
+<script src="../js/nav.js"></script>
+<script src="../js/profile.js"></script>
+
+</body>
+</html>

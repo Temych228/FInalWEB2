@@ -14,31 +14,33 @@
 
 <body class="layout">
 
-  <!-- HEADER -->
   <header class="home-header">
     <div class="nav-container">
-      <a href="index.html" class="logo" title="PetAdopt">
+      <a href="/" class="logo" title="PetAdopt">
         <i class="fa-solid fa-paw"></i> PetAdopt
       </a>
 
-      <nav class="header-nav">
-        <a href="index.html">Home</a>
 
-        <div class="dropdown">
-          <button class="dropbtn" id="petsToggle" type="button">Pets ▾</button>
-          <div class="dropdown-content">
-            <a href="dogs.html"><i class="fa-solid fa-dog"></i> Dogs</a>
-            <a href="cats.html"><i class="fa-solid fa-cat"></i> Cats</a>
-            <a href="birds.html"><i class="fa-solid fa-dove"></i> Birds</a>
-          </div>
-        </div>
+<nav class="header-nav">
+  <a href="/">Home</a>
 
-        <a href="login.html" class="active-link">Login</a>
-      </nav>
+  <div class="dropdown">
+    <button class="dropbtn" id="petsToggle" type="button">Pets ▾</button>
+    <div class="dropdown-content">
+      <a href="dogs.html">Dogs</a>
+      <a href="cats.html">Cats</a>
+      <a href="birds.html">Birds</a>
+    </div>
+  </div>
+
+  <a href="login.html" id="loginLink">Login</a>
+  <a href="profile.html" id="profileLink" style="display:none;">Profile</a>
+  <a href="#" id="logoutLink" style="display:none;">Logout</a>
+</nav>
+
     </div>
   </header>
 
-  <!-- MAIN -->
   <main class="main-content">
     <section class="auth-card">
       <div class="auth-header">
@@ -50,13 +52,11 @@
 
       <div id="authStatus" class="auth-status" style="display:none;"></div>
 
-      <!-- Tabs -->
       <div class="auth-tabs">
         <button class="auth-tab active" id="tabLogin" type="button">Login</button>
         <button class="auth-tab" id="tabRegister" type="button">Register</button>
       </div>
 
-      <!-- LOGIN FORM -->
       <form id="loginForm" class="auth-form">
         <label class="auth-label">Email</label>
         <input class="auth-input" type="email" id="loginEmail" placeholder="" required />
@@ -71,7 +71,6 @@
         <div id="loginMsg" class="auth-msg"></div>
       </form>
 
-      <!-- REGISTER FORM -->
       <form id="registerForm" class="auth-form" style="display:none;">
         <label class="auth-label">Username</label>
         <input class="auth-input" type="text" id="regUsername" placeholder="" required />
@@ -98,7 +97,6 @@
     </section>
   </main>
 
-  <!-- FOOTER -->
   <footer class="footer">
     <p><b>Developers:</b> Safaryan Artyom, Daniyar Ayazbaev, Faizrakhman Alikhan</p>
   </footer>
