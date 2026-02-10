@@ -118,7 +118,7 @@ and is separated from the backend logic.
 ## Setup Instructions
 
 1. Clone the repository:
-   git clone https://github.com/USERNAME/REPO_NAME.git
+   git clone https://github.com/Temych228/FInalWEB2.git
 
 2. Navigate to the project directory:
    cd FINALWEB2
@@ -276,8 +276,9 @@ or delete the pet from the system.
 
 ## Deployment
 
-The project is deployed on _____
-Link:
+The project is deployed on _____.
+
+Link: _____
 
 
 
