@@ -238,6 +238,49 @@ Fields:
 
 
 
+## Screenshots
+
+### Home Page
+<img width="1918" height="1022" alt="image" src="https://github.com/user-attachments/assets/51540de6-9538-45c2-8e0a-d24be2fc0068" />
+
+  The main page of the application displaying available pet categories
+and general information about the platform.
+
+### Login and Registration
+<img width="1919" height="1023" alt="image" src="https://github.com/user-attachments/assets/9ffa33ee-21ea-4d41-a27d-4a35e094470f" />
+<img width="1919" height="1022" alt="image" src="https://github.com/user-attachments/assets/b7406286-79a1-41ab-9fc6-5d61b9b0493b" />
+
+  The authentication page where users can register a new account
+or log in to an existing one.
+
+### Pet Details Page
+<img width="1919" height="1020" alt="image" src="https://github.com/user-attachments/assets/0ba9a33f-a3b9-4d94-99d0-abc97edb48ea" />
+
+  A detailed pet page showing information such as age, gender, description,
+location, and adoption status.
+
+### User Profile Page
+<img width="1919" height="1028" alt="image" src="https://github.com/user-attachments/assets/42f1dc75-fc17-4d78-9210-77df0804ea84" />
+
+  The user profile page displaying personal information
+and a list of adopted pets.
+
+### Pet Management (Admin)
+<img width="2047" height="1085" alt="image" src="https://github.com/user-attachments/assets/eb657946-bde0-4300-9bdc-94083e0b1cb6" />
+
+  This screenshot shows the pet details page.
+Users with administrator privileges can edit pet information
+or delete the pet from the system.
+
+
+
+## Deployment
+
+The project is deployed on _____
+Link:
+
+
+
 ## Authors
 
 - Safaryan Artyom
