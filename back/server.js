@@ -10,7 +10,7 @@ dotenv.config();
 console.log("ENV CHECK:", process.env.MONGO_URI);
 
 const port = 3000;
-
+    
 try {
     await connectDB();
     console.log("MongoDB connected");
