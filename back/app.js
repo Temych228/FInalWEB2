@@ -2,9 +2,16 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 
+import cors from "cors";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
+import morgan from "morgan";
+
 import authRoutes from "./src/routes/auth.routes.js";
 import petRoutes from "./src/routes/pet.routes.js";
 import adoptionRoutes from "./src/routes/adoption.routes.js";
+import { notFound, errorHandler } from "./src/middleware/error.middleware.js";
+import debugRoutes from "./src/routes/debug.routes.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -12,6 +19,17 @@ const __dirname = path.dirname(__filename);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(helmet());
+app.use(cors({ origin: process.env.CORS_ORIGIN || "*" }));
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, 
+  max: 100
+});
+app.use(limiter);
+
+app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 
 app.use(express.static(path.join(__dirname, "../front")));
 
@@ -46,5 +64,9 @@ app.get("/profile.html", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/pets", petRoutes);
 app.use("/api/adoptions", adoptionRoutes);
+
+app.use(notFound);
+app.use(errorHandler);
+app.use("/api/debug", debugRoutes);
 
 export default app;

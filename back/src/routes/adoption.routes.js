@@ -6,13 +6,20 @@ import {
   getMyAdoptionRequests,
   updateAdoptionStatus
 } from "../controllers/adoption.controller.js";
+import { validateObjectIdParam } from "../middleware/validators.js";
 
 const router = Router();
 
-router.post("/:petId", authMiddleware, sendAdoptionRequest);
+router.post("/:petId", authMiddleware, validateObjectIdParam("petId"), sendAdoptionRequest);
 
 router.get("/me", authMiddleware, getMyAdoptionRequests);
 
-router.put("/:userId/:requestId", authMiddleware, updateAdoptionStatus);
+router.put(
+  "/:userId/:requestId",
+  authMiddleware,
+  validateObjectIdParam("userId"),
+  validateObjectIdParam("requestId"),
+  updateAdoptionStatus
+);
 
 export default router;

@@ -5,7 +5,7 @@ export const createPet = async (req, res) => {
   try {
     const pet = await Pet.create({
       ...req.body,
-      owner: req.user.id  
+      owner: req.user.id
     });
     res.status(201).json(pet);
   } catch (err) {
@@ -14,16 +14,30 @@ export const createPet = async (req, res) => {
   }
 };
 
-
 export const getPets = async (req, res) => {
-  const pets = await Pet.find().populate("owner", "username");
-  res.json(pets);
+  try {
+    const pets = await Pet.find().populate("owner", "username");
+    console.log(`[DEBUG] getPets: found ${Array.isArray(pets) ? pets.length : 0} pets`);
+    res.json(pets);
+  } catch (err) {
+    console.error("GET PETS ERROR:", err);
+    res.status(500).json({ message: "Server error" });
+  }
 };
 
 export const getPetById = async (req, res) => {
-  const pet = await Pet.findById(req.params.id);
-  if (!pet) return res.status(404).json({ message: "Pet not found" });
-  res.json(pet);
+  try {
+    const pet = await Pet.findById(req.params.id).populate("owner", "username email");
+    if (!pet) {
+      console.warn(`[DEBUG] getPetById: pet not found id=${req.params.id}`);
+      return res.status(404).json({ message: "Pet not found" });
+    }
+    console.log(`[DEBUG] getPetById: found pet id=${pet._id}, name=${pet.name}`);
+    res.json(pet);
+  } catch (err) {
+    console.error("GET PET BY ID ERROR:", err);
+    res.status(500).json({ message: "Server error" });
+  }
 };
 
 export const updatePet = async (req, res) => {
@@ -57,7 +71,6 @@ export const deletePet = async (req, res) => {
 export const adoptPet = async (req, res) => {
   try {
     const petId = req.params.id;
-
     const userId = req.user.id;
 
     const pet = await Pet.findById(petId);
@@ -66,9 +79,7 @@ export const adoptPet = async (req, res) => {
     }
 
     if (!pet.isAvailable) {
-      return res
-        .status(400)
-        .json({ message: "This pet has already been adopted" });
+      return res.status(400).json({ message: "This pet has already been adopted" });
     }
 
     const user = await User.findById(userId);
@@ -88,7 +99,7 @@ export const adoptPet = async (req, res) => {
       pet
     });
   } catch (error) {
-    console.error(error);
+    console.error("ADOPT PET ERROR:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
