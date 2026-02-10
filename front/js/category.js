@@ -83,6 +83,9 @@ async function loadCategory(type) {
   const statusEl = document.getElementById("status");
   if (statusEl) statusEl.textContent = "Loading pets from database...";
 
+  if (categoryLoaded) return;
+  categoryLoaded = true;
+
   try {
     const res = await fetch("/api/pets");
     if (!res.ok) {
