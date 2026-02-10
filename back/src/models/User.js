@@ -60,6 +60,13 @@ const userSchema = new mongoose.Schema(
             }
         ],
 
+        adoptedPets: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Pet"
+            }
+        ],
+
         adoptionRequests: [adoptionRequestSchema]
     },
     {

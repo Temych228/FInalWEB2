@@ -24,7 +24,7 @@ async function loadProfile() {
   try {
     const res = await fetch("/api/auth/me", {
       headers: {
-        "Authorization": `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       }
     });
 
@@ -35,6 +35,7 @@ async function loadProfile() {
     }
 
     const user = await res.json();
+
     document.getElementById("profileName").innerText = user.username || "";
     document.getElementById("profileEmail").innerText = user.email || "";
     document.getElementById("profileRole").innerText = user.role || "";
@@ -47,12 +48,41 @@ async function loadProfile() {
     if (elUser) elUser.value = user.username || "";
     if (elEmail) elEmail.value = user.email || "";
 
+    renderAdoptedPets(user.adoptedPets || []);
+
   } catch (err) {
     console.error("Profile load error:", err);
     clearAuth();
     window.location.href = "login.html";
   }
 }
+
+function renderAdoptedPets(adopted) {
+  const container = document.getElementById("adoptedPets");
+  if (!container) return;
+
+  if (!adopted || !adopted.length) {
+    container.innerHTML = "<p>You have not adopted any pets yet.</p>";
+    return;
+  }
+
+  container.innerHTML = adopted
+    .map(
+      p => `
+        <div class="adopted-pet">
+          <a href="pet.html?id=${p._id}" style="display: flex; align-items: center; width: 100%; text-decoration: none;">
+            <img src="${p.photoUrl || ""}" alt="${p.name}">
+            <div>
+              <b>${p.name}</b><br>
+              <small>${p.type} • ${p.location || ""}</small>
+            </div>
+          </a>
+        </div>
+      `
+    )
+    .join("");
+}
+
 
 document.getElementById("editProfileBtn")?.addEventListener("click", () => {
   document.getElementById("editModal").classList.add("active");
@@ -70,7 +100,10 @@ document.getElementById("logoutBtn2")?.addEventListener("click", () => {
 document.getElementById("editProfileForm")?.addEventListener("submit", async (e) => {
   e.preventDefault();
   const token = getToken();
-  if (!token) { window.location.href = "login.html"; return; }
+  if (!token) {
+    window.location.href = "login.html";
+    return;
+  }
 
   const username = document.getElementById("editUsername").value.trim();
   const email = document.getElementById("editEmail").value.trim();
@@ -80,7 +113,7 @@ document.getElementById("editProfileForm")?.addEventListener("submit", async (e)
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       },
       body: JSON.stringify({ username, email })
     });
@@ -95,9 +128,11 @@ document.getElementById("editProfileForm")?.addEventListener("submit", async (e)
     if (data.user) {
       localStorage.setItem(USER_KEY, JSON.stringify(data.user));
     }
+
     await loadProfile();
     document.getElementById("editModal").classList.remove("active");
     alert("Профиль обновлён");
+
   } catch (err) {
     console.error("Update profile error:", err);
     alert("Network error");

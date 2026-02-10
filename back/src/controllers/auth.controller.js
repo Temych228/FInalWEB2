@@ -100,7 +100,8 @@ export const me = async (req, res) => {
   try {
     const foundUser = await User
       .findById(req.user.id)
-      .select("-password");
+      .select("-password")
+      .populate("adoptedPets", "name type photoUrl location");
 
     if (!foundUser) {
       return res.status(404).json({ message: "User not found" });
