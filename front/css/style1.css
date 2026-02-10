@@ -246,4 +246,40 @@ body::before {
   margin-top: 6px;
 }
 
+.pet-action {
+  margin-top: 24px;
+}
 
+.adopt-btn {
+  padding: 12px 30px;
+  background: linear-gradient(135deg, #ffb703, #fb8500);
+  color: #1f1f1f;
+
+  border: none;
+  border-radius: 30px;
+
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+
+  cursor: pointer;
+  transition: all 0.25s ease;
+
+  box-shadow: 0 6px 18px rgba(251, 133, 0, 0.35);
+}
+
+.adopt-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(251, 133, 0, 0.5);
+}
+
+.adopt-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(251, 133, 0, 0.35);
+}
+
+.adopted-text {
+  font-weight: 600;
+  color: #ffb703;
+  margin-top: 10px;
+}

@@ -269,6 +269,7 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 28px; /* space between profile card and adopted pets */
 }
 
 /* FOOTER */
@@ -492,19 +493,44 @@ main {
 }
 
 .adopt-btn {
-  padding: 10px 14px;
+  display: inline-block;
+  padding: 12px 20px;
   border-radius: 12px;
-  border: none;
+  border: 0;
   cursor: pointer;
-  background: rgba(255, 181, 112, 0.95);
+  background: linear-gradient(180deg, #ffca88 0%, #ffb570 60%, #ff9f3b 100%);
   color: #111;
-  font-weight: 700;
-  transition: 0.2s;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.36);
+  transition: transform 0.16s ease, filter 0.16s ease;
+  border: 1px solid rgba(0,0,0,0.12);
+  text-decoration: none;
 }
 
 .adopt-btn:hover {
-  transform: translateY(-1px);
-  filter: brightness(1.05);
+  transform: translateY(-3px);
+  filter: brightness(1.02);
+}
+
+.adopt-btn:active {
+  transform: translateY(-1px) scale(0.995);
+}
+
+.adopt-btn:focus {
+  outline: 3px solid rgba(255,181,112,0.18);
+  outline-offset: 2px;
+}
+
+.adopted-pet small {
+  color: #ffffff;
+  opacity: 0.9;
+}
+
+.adopted-pet a {
+  color: inherit;
+  text-decoration: none;
 }
 
 .adopted-text {
@@ -540,4 +566,21 @@ main {
 
 .adopted-pet b {
   color: #ffb570;
+}
+
+
+.profile-container {
+  display: flex;
+  gap: 32px;             
+  align-items: flex-start;
+}
+
+.pet-action {
+  margin-top: 20px;
+}
+
+.adopted-text {
+  margin-top: 16px;
+  color: #ffb703;
+  font-weight: 600;
 }
