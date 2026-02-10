@@ -1,4 +1,6 @@
 let categoryLoaded = false;
+let petsCache = null; 
+let ongoingCategoryFetch = null; 
 
 function esc(s) {
   return String(s ?? "")
@@ -14,9 +16,8 @@ function formatAge(age) {
   return `Age: ${age} yr${Number(age) === 1 ? "" : "s"}`;
 }
 
-
 function normalizePhotoUrl(url) {
-  const placeholder = "/images/no-image.png"; 
+  const placeholder = "images/no-image.png"; 
   if (!url) return placeholder;
 
   const str = String(url).trim();
@@ -28,7 +29,10 @@ function normalizePhotoUrl(url) {
 
   if (/^\/\//.test(str)) return str;
 
-  if (!str.startsWith("/")) return "/" + str;
+  // Ensure a relative path (no leading slash) so deployment under a subpath works
+  if (str.startsWith("/")) {
+    return str.slice(1);
+  }
 
   return str;
 }
@@ -40,9 +44,11 @@ function renderGallery(pets) {
     return;
   }
 
+  petGrid.classList.remove("loading", "empty");
   petGrid.innerHTML = "";
 
   if (!Array.isArray(pets) || pets.length === 0) {
+    petGrid.classList.add("empty");
     petGrid.innerHTML = `<div style="opacity:.9;">No pets found.</div>`;
     return;
   }
@@ -60,7 +66,7 @@ function renderGallery(pets) {
 
       return `
         <div class="pet-card" data-id="${id}">
-          <img src="${photo}" alt="${name}" loading="lazy" onerror="this.onerror=null;this.src='/images/no-image.png'">
+          <img src="${photo}" alt="${name}" loading="lazy" onerror="this.onerror=null;this.src='images/no-image.png'">
           <div class="pet-overlay">
             <div class="pet-name">${name}</div>
             <div class="pet-age">${ageText}</div>
@@ -81,33 +87,108 @@ function renderGallery(pets) {
 
 async function loadCategory(type) {
   const statusEl = document.getElementById("status");
-  if (statusEl) statusEl.textContent = "Loading pets from database...";
+  const petGrid = document.getElementById("pet-grid");
+  
+  if (statusEl) {
+    statusEl.classList.add("loading");
+    statusEl.innerHTML = '<span class="spinner"></span>Loading pets...';
+  }
+  if (petGrid) petGrid.classList.add("loading");
 
-  if (categoryLoaded) return;
-  categoryLoaded = true;
-
-  try {
-    const res = await fetch("/api/pets");
-    if (!res.ok) {
-      throw new Error(`HTTP ${res.status}`);
-    }
-
-    const allPets = await res.json();
-
-    const arr = Array.isArray(allPets) ? allPets : [];
-
-    const filtered = arr.filter((p) => String(p.type) === String(type));
-
+  if (categoryLoaded && Array.isArray(petsCache)) {
+    const filtered = petsCache.filter((p) => String(p.type) === String(type));
     if (statusEl) {
+      statusEl.classList.remove("loading");
       statusEl.textContent = `Found ${filtered.length} ${type}(s). Hover to see name & age.`;
     }
-
+    if (petGrid) petGrid.classList.remove("loading");
     renderGallery(filtered);
+    return;
+  }
+
+  if (ongoingCategoryFetch) {
+    try {
+      await ongoingCategoryFetch;
+      if (Array.isArray(petsCache)) {
+        const filtered = petsCache.filter((p) => String(p.type) === String(type));
+        if (statusEl) {
+          statusEl.classList.remove("loading");
+          statusEl.textContent = `Found ${filtered.length} ${type}(s). Hover to see name & age.`;
+        }
+        if (petGrid) petGrid.classList.remove("loading");
+        renderGallery(filtered);
+      } else {
+        if (statusEl) {
+          statusEl.classList.remove("loading");
+          statusEl.textContent = "Failed to load pets.";
+        }
+        if (petGrid) {
+          petGrid.classList.remove("loading");
+          petGrid.classList.add("empty");
+          petGrid.innerHTML = `<div style="opacity:.9;">Error loading pets.</div>`;
+        }
+      }
+    } catch (e) {
+      if (statusEl) {
+        statusEl.classList.remove("loading");
+        statusEl.textContent = "Failed to load pets.";
+      }
+      if (petGrid) {
+        petGrid.classList.remove("loading");
+        petGrid.classList.add("empty");
+        petGrid.innerHTML = `<div style="opacity:.9;">Error loading pets.</div>`;
+      }
+    }
+    return;
+  }
+
+  ongoingCategoryFetch = (async () => {
+    try {
+      const res = await fetch("/api/pets");
+
+      if (res.status === 429) {
+        console.warn("Server returned 429 Too Many Requests");
+        if (statusEl) statusEl.textContent = "Too many requests — попробуйте позже.";
+        throw new Error("429 Too Many Requests");
+      }
+
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`);
+      }
+
+      const allPets = await res.json();
+      const arr = Array.isArray(allPets) ? allPets : [];
+
+      petsCache = arr;
+      categoryLoaded = true;
+
+      const filtered = arr.filter((p) => String(p.type) === String(type));
+      if (statusEl) {
+        statusEl.classList.remove("loading");
+        statusEl.textContent = `Found ${filtered.length} ${type}(s). Hover to see name & age.`;
+      }
+      if (petGrid) petGrid.classList.remove("loading");
+      renderGallery(filtered);
+    } catch (e) {
+      console.error("loadCategory error:", e);
+      if (statusEl) {
+        statusEl.classList.remove("loading");
+        statusEl.textContent = "Failed to load pets. Check server + /api/pets.";
+      }
+      if (petGrid) {
+        petGrid.classList.remove("loading");
+        petGrid.classList.add("empty");
+        petGrid.innerHTML = `<div style="opacity:.9;">Error loading pets.</div>`;
+      }
+      throw e; 
+    } finally {
+      ongoingCategoryFetch = null; 
+    }
+  })();
+
+  try {
+    await ongoingCategoryFetch;
   } catch (e) {
-    console.error("loadCategory error:", e);
-    if (statusEl) statusEl.textContent = "Failed to load pets. Check server + /api/pets.";
-    const petGrid = document.getElementById("pet-grid");
-    if (petGrid) petGrid.innerHTML = `<div style="opacity:.9;">Error loading pets.</div>`;
   }
 }
 

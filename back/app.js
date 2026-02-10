@@ -23,11 +23,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 app.use(cors({ origin: process.env.CORS_ORIGIN || "*" }));
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, 
-  max: 100
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: process.env.RATE_LIMIT_MAX ? parseInt(process.env.RATE_LIMIT_MAX) : 1000,
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  message: "Too many requests, please try again later",
 });
-app.use(limiter);
+// Apply rate limiter only to API routes (not static files)
+app.use('/api/', apiLimiter);
 
 app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 
@@ -65,8 +69,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/pets", petRoutes);
 app.use("/api/adoptions", adoptionRoutes);
 
+app.use("/api/debug", debugRoutes);
 app.use(notFound);
 app.use(errorHandler);
-app.use("/api/debug", debugRoutes);
 
 export default app;
